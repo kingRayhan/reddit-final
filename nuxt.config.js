@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titletemplate: "%s Reddit",
+    titleTemplate: "%s - Reddit",
     htmlAttrs: {
       lang: "en"
     },
@@ -23,7 +23,7 @@ export default {
   css: ["@/assets/styles/app.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ["~/plugins/axios"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -36,6 +36,11 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  loading: {
+    color: "#4270a2",
+    height: "5px"
+  },
 
   tailwindcss: {
     cssPath: "~/assets/styles/app.scss",
@@ -62,7 +67,8 @@ export default {
           },
           user: {
             url: "/api/user",
-            propertyName: false
+            propertyName: false,
+            autoFetch: false
           }
         }
       }

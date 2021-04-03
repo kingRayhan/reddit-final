@@ -7,6 +7,7 @@
       <input
         @change="$emit('input', $event.target.value)"
         :value="value"
+        v-bind="$attrs"
         class="block w-full px-2 py-1 text-xl border focus:outline-none"
         :class="{
           'border-red-500': isError

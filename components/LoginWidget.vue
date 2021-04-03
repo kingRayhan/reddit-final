@@ -33,26 +33,36 @@
 </template>
 
 <script>
+import validation from "~/mixins/validation";
 export default {
+  mixins: [validation],
   data() {
     return {
       form: {
         email: "",
         password: ""
-      },
-      errors: {}
+      }
     };
   },
   methods: {
-    async handleLogin() {
-      try {
-        const user = await this.$auth.loginWith("laravelSanctum", {
+    handleLogin() {
+      this.$auth
+        .loginWith("laravelSanctum", {
           data: this.form
-        });
-        console.log(user);
-      } catch (error) {
-        this.errors = error.response.data.errors;
-      }
+        })
+        .then(d => console.log("ddd"))
+        .catch(this.resolveErrors);
+      // try {
+
+      // when two factor authentication is enabled
+      // if (two_factor) {
+      //   this.$router.push({
+      //     name: "auth-two-factor-authentication"
+      //   });
+      // }
+      // } catch (error) {
+      //   this.errors = error.response.data.errors;
+      // }
     }
   }
 };

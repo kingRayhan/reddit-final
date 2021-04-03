@@ -9,32 +9,33 @@
         label="Username"
         placeholder="Your username"
         v-model="form.username"
-        :helperText="errors.username && errors.username.join('')"
-        :isError="errors.username !== undefined"
+        :helperText="errorMessage('username')"
+        :isError="Boolean(errorMessage('username'))"
       />
       <form-input
         label="Email"
         placeholder="Your email"
+        type="email"
         v-model="form.email"
-        :helperText="errors.email && errors.email.join('')"
-        :isError="errors.email !== undefined"
+        :helperText="errorMessage('email')"
+        :isError="Boolean(errorMessage('email'))"
       />
       <form-input
         label="Password"
         placeholder="Your password"
         v-model="form.password"
-        :helperText="errors.password && errors.password.join('')"
-        :isError="errors.password !== undefined"
+        type="password"
+        :helperText="errorMessage('password')"
+        :isError="Boolean(errorMessage('password'))"
       />
 
       <form-input
         label="Password again"
         placeholder="Password again"
+        type="password"
         v-model="form.password_confirmation"
-        :helperText="
-          errors.password_confirmation && errors.password_confirmation.join('')
-        "
-        :isError="errors.password_confirmation !== undefined"
+        :helperText="errorMessage('password_confirmation')"
+        :isError="Boolean(errorMessage('password_confirmation'))"
       />
 
       <form-button>Login</form-button>
@@ -42,7 +43,9 @@
   </div>
 </template>
 <script>
+import validation from "~/mixins/validation";
 export default {
+  mixins: [validation],
   data() {
     return {
       form: {
@@ -50,20 +53,25 @@ export default {
         email: "",
         password: "",
         password_confirmation: ""
-      },
-      errors: {}
+      }
     };
   },
   methods: {
-    handleRegister() {
-      this.$axios.$get("/sanctum/csrf-cookie").then(() => {
-        this.$axios
-          .$post("/api/auth/register", this.form)
-          .then(d => {
-            this.$router.push("/");
-          })
-          .catch(e => (this.errors = e.response.data.errors));
-      });
+    async handleRegister() {
+      await this.$axios.$get("/sanctum/csrf-cookie");
+
+      this.$axios
+        .$post("/api/auth/register", this.form)
+        .then(() => {
+          this.$store.commit(
+            "alert/SHOW_SUCCESS",
+            "Check your email to verify"
+          );
+
+          this.$auth.fetchUser();
+          this.$router.push("/");
+        })
+        .catch(this.resolveErrors);
     }
   }
 };

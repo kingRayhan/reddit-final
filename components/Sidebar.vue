@@ -1,6 +1,8 @@
 <template>
   <div>
-    <login-widget />
+    <login-widget v-if="!$auth.loggedIn" />
+
+    <email-not-verified v-if="$auth.loggedIn" />
 
     <div>
       <nuxt-link class="mb-4 submitter-button" to="/new">
