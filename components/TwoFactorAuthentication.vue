@@ -37,15 +37,33 @@
 
           <div v-html="qrCode"></div>
         </div>
+
+        <div v-if="recoveryCodes">
+          <p class="mt-5 text-gray-500">
+            Store these recovery codes in a secure password manager. They can be
+            used to recover access to your account if your two factor
+            authentication device is lost.
+          </p>
+          <pre v-html="recoveryCodes.join('\n')"></pre>
+        </div>
       </div>
 
       <div>
         <div class="flex space-x-4">
           <form-button
-            v-if="!recoveryCode & isTwoFacorAutheticationEnabled"
+            v-if="!recoveryCodes && isTwoFacorAutheticationEnabled"
             :loading="loading"
+            @click="generateRecoveryCodes"
           >
             Show recovery codes
+          </form-button>
+
+          <form-button
+            v-if="recoveryCodes && isTwoFacorAutheticationEnabled"
+            :loading="loading"
+            @click="reGenerateRecoveryCodes"
+          >
+            Regenerate recovery codes
           </form-button>
 
           <form-button
@@ -77,7 +95,7 @@ export default {
   data() {
     return {
       loading: false,
-      recoveryCode: null,
+      recoveryCodes: null,
       qrCode: null
     };
   },
@@ -87,12 +105,17 @@ export default {
       this.loading = true;
       await this.sudoCheck();
       await this.$axios.$post("/api/auth/user/two-factor-authentication");
+
       const { svg } = await this.$axios.$get(
         "/api/auth/user/two-factor-qr-code"
       );
 
-      this.qrCode = svg;
+      const codes = await this.$axios.$get(
+        "/api/auth/user/two-factor-recovery-codes"
+      );
 
+      this.qrCode = svg;
+      this.recoveryCodes = codes;
       this.loading = false;
       this.$auth.fetchUser();
     },
@@ -102,14 +125,23 @@ export default {
       await this.$axios.$delete("/api/auth/user/two-factor-authentication");
       this.loading = false;
       this.qrCode = null;
+      this.recoveryCodes = null;
+
       this.$auth.fetchUser();
     },
-    async showQRCode() {
-      // this.loading = true;
-      // const { svg } = await this.$axios.$get(
-      //   "/api/auth/user/two-factor-qr-code"
-      // );
-      // this.recoveryCode =
+    async generateRecoveryCodes() {
+      this.loading = true;
+      const codes = await this.$axios.$get(
+        "/api/auth/user/two-factor-recovery-codes"
+      );
+      this.recoveryCodes = codes;
+      this.loading = false;
+    },
+    async reGenerateRecoveryCodes() {
+      this.loading = true;
+      await this.$axios.$post("/api/auth/user/two-factor-recovery-codes");
+      await this.generateRecoveryCodes();
+      this.loading = false;
     }
   },
   computed: {
