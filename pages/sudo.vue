@@ -71,7 +71,6 @@ export default {
             "Your password is confirmed"
           );
           this.$router.push(this.$route.query.redirectTo);
-          this.$nuxt.$emit("sudo-confirmed", true);
         })
         .catch(this.resolveErrors);
     }

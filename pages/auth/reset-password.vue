@@ -21,23 +21,36 @@
               d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01"
             />
           </svg>
-          <span>Two factor authentication</span>
+          <span>Change password</span>
         </h3>
-        <p class="mt-3 text-xl text-gray-600 ">
-          Forgot your account’s password or having trouble logging into your
-          Team? Enter your email address and we’ll send you a recovery link.
-        </p>
       </div>
 
-      <form action="#" class="mt-5" @submit.prevent="forgotPassword">
+      <form action="#" class="mt-5" @submit.prevent="resetPassword">
         <form-input
+          :disabled="true"
           placeholder="Your email address"
           label="Email address"
           v-model="form.email"
           :helperText="errorMessage('email')"
           :isError="Boolean(errorMessage('email'))"
         />
-        <form-button :loading="loading">Send recovery email</form-button>
+        <form-input
+          placeholder="Password"
+          label="Password"
+          v-model="form.password"
+          type="password"
+          :helperText="errorMessage('password')"
+          :isError="Boolean(errorMessage('password'))"
+        />
+        <form-input
+          placeholder="Confirm password"
+          label="Confirm password"
+          v-model="form.password_confirmation"
+          type="password"
+          :helperText="errorMessage('password_confirmation')"
+          :isError="Boolean(errorMessage('password_confirmation'))"
+        />
+        <form-button :loading="loading">Change password</form-button>
       </form>
     </div>
   </div>
@@ -47,33 +60,36 @@
 import validation from "~/mixins/validation";
 export default {
   head: {
-    title: "Recovery account"
+    title: "Change account"
   },
   mixins: [validation],
   layout: "fullwidth",
   data() {
     return {
       form: {
-        email: ""
+        email: this.$route.query.email || "",
+        password: "",
+        password_confirmation: "",
+        token: this.$route.query.token
       },
       loading: false
     };
   },
   methods: {
-    async forgotPassword() {
+    async resetPassword() {
       this.errors = {};
       this.loading = true;
       await this.$axios.$get("/sanctum/csrf-cookie");
       this.$axios
-        .$post("/api/auth/forgot-password", this.form)
+        .$post("/api/auth/reset-password", this.form)
         .then(() => {
-          this.$store.commit(
-            "alert/SHOW_SUCCESS",
-            "Check email inbox to recover your account"
-          );
           this.$router.push({
             name: "index"
           });
+          this.$store.commit(
+            "alert/SHOW_SUCCESS",
+            "Your password has been reset!"
+          );
         })
         .catch(this.resolveErrors);
 

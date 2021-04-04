@@ -88,10 +88,9 @@
   </div>
 </template>
 <script>
-import sudo from "~/mixins/sudo";
 import validation from "~/mixins/validation";
 export default {
-  mixins: [sudo, validation],
+  mixins: [validation],
   data() {
     return {
       loading: false,

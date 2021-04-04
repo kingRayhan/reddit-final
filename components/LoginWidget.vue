@@ -24,7 +24,9 @@
       />
     </div>
     <div>
-      <a href="#">Forgot password?</a>
+      <nuxt-link :to="{ name: 'auth-forgot-password' }">
+        Forgot password?
+      </nuxt-link>
       <button class="px-3 mt-2 bg-gray-200 border border-gray-600 ">
         Login
       </button>

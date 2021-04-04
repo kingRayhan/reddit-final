@@ -56,7 +56,6 @@ export default {
     title: "sudo"
   },
   mixins: [validation],
-  middleware: [],
   layout: "fullwidth",
   data() {
     return {
