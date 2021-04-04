@@ -44,7 +44,7 @@
             used to recover access to your account if your two factor
             authentication device is lost.
           </p>
-          <pre v-html="recoveryCodes.join('\n')"></pre>
+          <pre v-html="recoveryCodes.join('\n')" class="p-3 bg-gray-100"></pre>
         </div>
       </div>
 
@@ -131,6 +131,7 @@ export default {
     },
     async generateRecoveryCodes() {
       this.loading = true;
+      this.sudoCheck();
       const codes = await this.$axios.$get(
         "/api/auth/user/two-factor-recovery-codes"
       );
@@ -139,6 +140,7 @@ export default {
     },
     async reGenerateRecoveryCodes() {
       this.loading = true;
+      this.sudoCheck();
       await this.$axios.$post("/api/auth/user/two-factor-recovery-codes");
       await this.generateRecoveryCodes();
       this.loading = false;

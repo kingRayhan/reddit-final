@@ -50,19 +50,7 @@ export default {
         .loginWith("laravelSanctum", {
           data: this.form
         })
-        .then(d => console.log("ddd"))
         .catch(this.resolveErrors);
-      // try {
-
-      // when two factor authentication is enabled
-      // if (two_factor) {
-      //   this.$router.push({
-      //     name: "auth-two-factor-authentication"
-      //   });
-      // }
-      // } catch (error) {
-      //   this.errors = error.response.data.errors;
-      // }
     }
   }
 };
