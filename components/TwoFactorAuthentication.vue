@@ -103,47 +103,49 @@ export default {
   methods: {
     async enableTwofactoryAuthentication() {
       this.loading = true;
-      await this.sudoCheck();
-      await this.$axios.$post("/api/auth/user/two-factor-authentication");
-
-      const { svg } = await this.$axios.$get(
-        "/api/auth/user/two-factor-qr-code"
-      );
-
-      const codes = await this.$axios.$get(
-        "/api/auth/user/two-factor-recovery-codes"
-      );
-
-      this.qrCode = svg;
-      this.recoveryCodes = codes;
-      this.loading = false;
-      this.$auth.fetchUser();
+      try {
+        await this.$axios.$post("/api/auth/user/two-factor-authentication");
+        const { svg } = await this.$axios.$get(
+          "/api/auth/user/two-factor-qr-code"
+        );
+        const codes = await this.$axios.$get(
+          "/api/auth/user/two-factor-recovery-codes"
+        );
+        this.qrCode = svg;
+        this.recoveryCodes = codes;
+        this.loading = false;
+        this.$auth.fetchUser();
+      } catch (error) {}
     },
     async disableTwofactoryAuthentication() {
       this.loading = true;
-      this.sudoCheck();
-      await this.$axios.$delete("/api/auth/user/two-factor-authentication");
-      this.loading = false;
-      this.qrCode = null;
-      this.recoveryCodes = null;
 
-      this.$auth.fetchUser();
+      try {
+        await this.$axios.$delete("/api/auth/user/two-factor-authentication");
+
+        this.loading = false;
+        this.qrCode = null;
+        this.recoveryCodes = null;
+        this.$auth.fetchUser();
+      } catch (error) {}
     },
     async generateRecoveryCodes() {
       this.loading = true;
-      this.sudoCheck();
-      const codes = await this.$axios.$get(
-        "/api/auth/user/two-factor-recovery-codes"
-      );
-      this.recoveryCodes = codes;
-      this.loading = false;
+      try {
+        const codes = await this.$axios.$get(
+          "/api/auth/user/two-factor-recovery-codes"
+        );
+        this.recoveryCodes = codes;
+        this.loading = false;
+      } catch (error) {}
     },
     async reGenerateRecoveryCodes() {
       this.loading = true;
-      this.sudoCheck();
-      await this.$axios.$post("/api/auth/user/two-factor-recovery-codes");
-      await this.generateRecoveryCodes();
-      this.loading = false;
+      try {
+        await this.$axios.$post("/api/auth/user/two-factor-recovery-codes");
+        await this.generateRecoveryCodes();
+        this.loading = false;
+      } catch (error) {}
     }
   },
   computed: {

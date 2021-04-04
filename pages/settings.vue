@@ -74,9 +74,8 @@
 
 <script>
 import validation from "~/mixins/validation";
-import sudo from "~/mixins/sudo";
 export default {
-  mixins: [validation, sudo],
+  mixins: [validation],
   name: "Settings",
   head: {
     title: "Settings"
@@ -135,7 +134,10 @@ export default {
       }
     },
     async destroyAccount() {
-      this.sudoCheck();
+      try {
+        await this.$axios.$delete("/api/auth/destroy");
+        this.$user.fetchUser();
+      } catch (error) {}
     }
   }
 };
