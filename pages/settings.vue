@@ -75,15 +75,11 @@
 <script>
 import validation from "~/mixins/validation";
 export default {
-  mixins: [validation],
   name: "Settings",
+  mixins: [validation],
+  middleware: ["auth"],
   head: {
     title: "Settings"
-  },
-  mounted() {
-    // this.$axios
-    //   .$get("/api/auth/user/two-factor-qr-code")
-    //   .then(d => console.log(d));
   },
   data() {
     return {

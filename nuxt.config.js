@@ -23,7 +23,7 @@ export default {
   css: ["@/assets/styles/app.scss"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/axios"],
+  plugins: ["~/plugins/axios", "~/plugins/tabs.client"],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

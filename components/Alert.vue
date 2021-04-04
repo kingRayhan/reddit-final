@@ -16,6 +16,20 @@
 import { mapState } from "vuex";
 export default {
   computed: mapState("alert", ["show", "type", "message"]),
+  data() {
+    return {
+      showAlert: this.show
+    };
+  },
+  watch: {
+    showAlert(newVal) {
+      if (newVal)
+        setTimeout(() => {
+          this.showAlert = false;
+          alert("");
+        }, 5000);
+    }
+  },
   methods: {
     close() {
       this.$store.commit("alert/CLOSE");
