@@ -25,24 +25,24 @@
           Before commiting this action, you need to confirm your passowrd
         </p>
 
-        <div class="mt-5 ">
-          <form-input
-            placeholder="Current password"
-            label="Confirm password"
-            type="password"
-            v-model="password"
-            :helperText="errorMessage('password')"
-            :isError="Boolean(errorMessage('password'))"
-          />
-        </div>
+        <form action="#" method="POST" @submit.prevent="confirmPassword">
+          <div class="mt-5">
+            <form-input
+              placeholder="Current password"
+              label="Confirm password"
+              type="password"
+              v-model="password"
+              :helperText="errorMessage('password')"
+              :isError="Boolean(errorMessage('password'))"
+            />
+          </div>
+          <button class="px-2 py-1 text-white bg-yellow-500 rounded">
+            Confirm
+          </button>
+        </form>
       </div>
 
-      <button
-        class="px-2 py-1 text-white bg-yellow-500 rounded"
-        @click="confirmPassword"
-      >
-        Confirm
-      </button>
+      <form action="#" method="POST"></form>
     </div>
   </div>
 </template>

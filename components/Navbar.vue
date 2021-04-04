@@ -18,7 +18,7 @@
 
       <div class="navbar__user-menu" v-else>
         Want to join?
-        <nuxt-link to="/register">Signup</nuxt-link>
+        <nuxt-link :to="{ name: 'auth-signup' }">Signup</nuxt-link>
         in a seconds.
       </div>
     </div>

@@ -38,7 +38,7 @@
         :isError="Boolean(errorMessage('password_confirmation'))"
       />
 
-      <form-button>Login</form-button>
+      <form-button :loading="loading">Login</form-button>
     </form>
   </div>
 </template>
@@ -53,25 +53,25 @@ export default {
         email: "",
         password: "",
         password_confirmation: ""
-      }
+      },
+      loading: false
     };
   },
   methods: {
     async handleRegister() {
+      this.loading = true;
       await this.$axios.$get("/sanctum/csrf-cookie");
 
-      this.$axios
-        .$post("/api/auth/register", this.form)
-        .then(() => {
-          this.$store.commit(
-            "alert/SHOW_SUCCESS",
-            "Check your email to verify"
-          );
+      try {
+        await this.$axios.$post("/api/auth/register", this.form);
+        this.$store.commit("alert/SHOW_SUCCESS", "Check your email to verify");
+        this.$auth.fetchUser();
+        this.$router.push("/");
+      } catch (error) {
+        this.resolveErrors(error);
+      }
 
-          this.$auth.fetchUser();
-          this.$router.push("/");
-        })
-        .catch(this.resolveErrors);
+      this.loading = false;
     }
   }
 };
