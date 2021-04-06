@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="mb-4 text-2xl">Submit post/link</h2>
+    <h2 class="mb-4 text-2xl">Update post/link</h2>
 
     <editor @saved="handleSaveThread" :errors="errors" />
 
@@ -35,17 +35,15 @@ export default {
     async handleSaveThread(data) {
       try {
         const thread = await this.$axios.$post("/api/threads", data);
+        // TODO: redirect to thread details page
 
         this.$store.commit(
           "alert/SHOW_SUCCESS",
           "Your thread created successfully"
         );
-
-        console.log(thread.slug);
-        // this.$router.push({
-        //   name: "threads-slug",
-        //   params: { slug: thread.slug }
-        // });
+        this.$router.push({
+          name: "index"
+        });
       } catch (e) {
         this.resolveErrors(e);
       }

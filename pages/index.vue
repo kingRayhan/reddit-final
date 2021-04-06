@@ -1,5 +1,6 @@
 <template>
   <div class="mt-3">
+    <modal />
     <Thread
       class="mb-4"
       v-for="(thread, index) in resources"
@@ -7,7 +8,6 @@
       :thread="thread"
       @removed="handleAfterThreadDeleted"
     />
-
     <div
       v-observe-visibility="visibilityChanged"
       v-if="current_page < last_page"

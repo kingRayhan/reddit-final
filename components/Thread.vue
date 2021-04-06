@@ -76,13 +76,21 @@
                 <span class="mr-3 text-sm font-bold text-gray-600">
                   74 comments
                 </span>
+
                 <button
                   class="mr-3 text-sm font-bold text-gray-600 hover:underline"
                 >
                   Share
                 </button>
                 <a
-                  v-if="$auth.user.id == thread.user.id"
+                  v-if="$auth.loggedIn && $auth.user.id == thread.user.id"
+                  class="mr-3 text-sm font-bold text-green-600 cursor-pointer"
+                  @click.prevent="destroy"
+                >
+                  Edit
+                </a>
+                <a
+                  v-if="$auth.loggedIn && $auth.user.id == thread.user.id"
                   class="text-sm font-bold text-red-600 cursor-pointer"
                   @click.prevent="destroy"
                 >
