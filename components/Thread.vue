@@ -81,21 +81,25 @@
                 >
                   Share
                 </button>
-                <a class="text-sm font-bold text-red-600 cursor-pointer">
+                <a
+                  v-if="$auth.user.id == thread.user.id"
+                  class="text-sm font-bold text-red-600 cursor-pointer"
+                  @click.prevent="destroy"
+                >
                   Delete
                 </a>
               </div>
             </div>
           </div>
-          <div v-if="expanded" class="thread__details">
+          <div v-if="expanded" class="thread__details overflow-ellipsis">
             <p v-if="thread.image">
               <img :src="thread.image" :alt="thread.title" />
             </p>
             <p v-else-if="thread.text">
               {{ thread.text }}
             </p>
-            <p v-else-if="thread.link">
-              <a :href="thread.link">{{ thread.link }}</a>
+            <p v-else-if="thread.url">
+              <a :href="thread.url">{{ thread.url }}</a>
             </p>
           </div>
         </div>
@@ -116,6 +120,12 @@ export default {
     hostName(fullUrl) {
       const url = new URL(fullUrl);
       return url.host;
+    },
+    async destroy() {
+      if (confirm("sure to delete?")) {
+        await this.$axios.$delete(`/api/threads/${this.thread.slug}`);
+        this.$emit("removed", this.thread.id);
+      }
     }
   }
 };

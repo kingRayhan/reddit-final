@@ -6,9 +6,10 @@
     <div class="mt-3">
       <Thread
         class="mb-4"
-        v-for="thread in resources"
-        :key="thread.id"
+        v-for="(thread, index) in resources"
+        :key="index"
         :thread="thread"
+        @removed="handleAfterThreadDeleted"
       />
 
       <div
@@ -54,6 +55,9 @@ export default {
       if (!isVisible || this.current_page >= this.last_page) return;
       this.current_page++;
       await this.loadMore();
+    },
+    handleAfterThreadDeleted(threadId) {
+      this.resources = this.resources.filter(thread => thread.id !== threadId);
     }
   }
 };

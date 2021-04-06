@@ -1,6 +1,10 @@
 <template>
   <div>
-    <thread :thread="thread" :expanded="true" />
+    <thread
+      :thread="thread"
+      :expanded="true"
+      @removed="handleAfterThreadDeleted"
+    />
     <hr class="my-5" />
 
     <div class="mb-5 ">
@@ -32,6 +36,11 @@ export default {
   async asyncData({ $axios, params }) {
     const { data: thread } = await $axios.$get(`/api/threads/${params.slug}`);
     return { thread };
+  },
+  methods: {
+    handleAfterThreadDeleted() {
+      this.$router.push({ name: "index" });
+    }
   }
 };
 </script>
