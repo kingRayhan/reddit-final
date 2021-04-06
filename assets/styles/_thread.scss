@@ -1,13 +1,16 @@
 .thread {
-  @apply flex items-center;
+  @apply flex;
   &__votes {
     @apply flex flex-col items-center mr-5;
   }
   &__inner {
-    @apply flex items-center;
+    @apply flex items-start;
   }
   &__icon {
     @apply mr-4;
+  }
+  &__details {
+    @apply text-xl bg-gray-100 border border-primary p-2 rounded;
   }
 }
 

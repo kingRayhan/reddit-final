@@ -1,16 +1,11 @@
 <template>
   <div>
-    <thread />
+    <thread :thread="thread" :expanded="true" />
     <hr class="my-5" />
-    <div class="p-2 my-4 text-2xl border border-dashed rounded">
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim rerum
-      corporis nostrum, ad natus odit dolorem blanditiis dolor, vitae magni, et
-      ipsam illo placeat autem obcaecati voluptate asperiores nam error!
-    </div>
 
     <div class="mb-5 ">
       <textarea
-        class="w-full border-2 border-gray-600 "
+        class="w-full p-2 border-2 border-gray-600"
         cols="30"
         rows="4"
       ></textarea>
@@ -29,3 +24,14 @@
     <comment />
   </div>
 </template>
+
+<script>
+import Thread from "~/components/Thread.vue";
+export default {
+  components: { Thread },
+  async asyncData({ $axios, params }) {
+    const { data: thread } = await $axios.$get(`/api/threads/${params.slug}`);
+    return { thread };
+  }
+};
+</script>

@@ -1,19 +1,41 @@
 <template>
   <div class="mt-3">
-    <Thread class="mb-4" />
-    <Thread class="mb-4" />
-    <Thread class="mb-4" />
+    <Thread
+      class="mb-4"
+      v-for="thread in resources"
+      :key="thread.id"
+      :thread="thread"
+    />
+
+    <div
+      v-observe-visibility="visibilityChanged"
+      v-if="current_page < last_page"
+    >
+      loading
+    </div>
   </div>
 </template>
 
 <script>
+import pagination from "~/mixins/pagination";
 export default {
   head: {
     title: "Home"
   },
-  asyncData({ query, store }) {
+  data() {
+    return {};
+  },
+  mixins: [pagination],
+  async asyncData({ query, store, $axios }) {
     if (query.verified == 1)
       store.commit("alert/SHOW_SUCCESS", "Your accout is active now");
+
+    const threads = await $axios.$get("/api/threads");
+    return {
+      resources: threads.data,
+      current_page: threads.meta.current_page,
+      last_page: threads.meta.last_page
+    };
   }
 };
 </script>
