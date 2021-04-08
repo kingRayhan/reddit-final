@@ -43,7 +43,10 @@ export default {
   methods: {
     async handleSaveThread(data) {
       try {
-        const thread = await this.$axios.$post("/api/threads", data);
+        const thread = await this.$axios.$put(
+          `/api/threads/${this.$route.params.slug}`,
+          data
+        );
         // TODO: redirect to thread details page
 
         this.$store.commit(

@@ -16,7 +16,7 @@
             {{ errorMessage("title") }}
           </p>
         </div>
-        <Tab title="Link" :active="true">
+        <Tab title="Link" :active="form.type == 'LINK'">
           <div class="p-3 mt-5 rounded-sm bg-primary">
             <label for="title" class="text-lg">
               url
@@ -47,9 +47,19 @@
               }"
               @vdropzone-success="handleThumbnail"
             />
+            <div class="mt-4 " v-if="form.image">
+              <button
+                type="button"
+                @click="removeImage"
+                class="px-2 py-1 text-white bg-red-500 rounded-full hover:bg-red-600"
+              >
+                &times; Remove image
+              </button>
+              <img :src="thread.image" alt="" />
+            </div>
           </div>
         </Tab>
-        <Tab title="Text">
+        <Tab title="Text" :active="form.type == 'TEXT'">
           <div class="p-3 mt-5 rounded-sm bg-primary">
             <label for="text" class="text-lg ">
               text <span class="text-gray-500 ">(optional)</span>
@@ -113,6 +123,9 @@ export default {
     },
     errorMessage(key) {
       if (this.errors[key]) return this.errors[key].join(" ");
+    },
+    removeImage() {
+      this.form.image = "";
     }
   }
 };
