@@ -39,7 +39,10 @@ export default {
   modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    minifyCSS: true,
+    minifyJS: true
+  },
 
   loading: {
     color: "#4270a2",
