@@ -1,8 +1,9 @@
 <template>
-  <div class="mt-3">
-    <div class="mb-5 " v-if="!$auth.loggedIn">
+  <div>
+    <div class="mb-5" v-if="!$auth.loggedIn">
       <welcome-banner />
     </div>
+
     <Thread
       class="mb-4"
       v-for="(thread, index) in resources"
@@ -10,11 +11,12 @@
       :thread="thread"
       @removed="handleAfterThreadDeleted"
     />
+
     <div
       v-observe-visibility="visibilityChanged"
       v-if="current_page < last_page"
     >
-      loading
+      <Loading />
     </div>
   </div>
 </template>

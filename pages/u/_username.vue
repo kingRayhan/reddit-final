@@ -16,7 +16,7 @@
         v-observe-visibility="visibilityChanged"
         v-if="current_page < last_page"
       >
-        loading
+        <Loading />
       </div>
     </div>
   </div>
