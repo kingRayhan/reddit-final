@@ -6,7 +6,15 @@
 
       <div class="navbar__user-menu" v-if="$auth.loggedIn">
         Howdy
-        <a class="font-bold" href="#"> /r/{{ $auth.user.username }} </a>
+        <nuxt-link
+          class="font-bold"
+          :to="{
+            name: 'u-username',
+            params: { username: $auth.user.username }
+          }"
+        >
+          /r/{{ $auth.user.username }}
+        </nuxt-link>
         <nuxt-link class="text-xs text-gray-700" to="/settings">
           (settings)
         </nuxt-link>
@@ -18,6 +26,7 @@
 
       <div class="navbar__user-menu" v-else>
         Want to join?
+        <nuxt-link :to="{ name: 'auth-signin' }">Log in</nuxt-link> or
         <nuxt-link :to="{ name: 'auth-signup' }">Signup</nuxt-link>
         in a seconds.
       </div>

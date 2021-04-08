@@ -25,7 +25,7 @@
 <script>
 import validation from "~/mixins/validation";
 export default {
-  middleware: "auth",
+  middleware: ["auth", "email-verified"],
   name: "New",
   head: {
     title: "Submit post/link"
@@ -34,18 +34,17 @@ export default {
   methods: {
     async handleSaveThread(data) {
       try {
-        const thread = await this.$axios.$post("/api/threads", data);
+        const { data: thread } = await this.$axios.$post("/api/threads", data);
 
         this.$store.commit(
           "alert/SHOW_SUCCESS",
           "Your thread created successfully"
         );
 
-        console.log(thread.slug);
-        // this.$router.push({
-        //   name: "threads-slug",
-        //   params: { slug: thread.slug }
-        // });
+        this.$router.push({
+          name: "threads-slug",
+          params: { slug: thread.slug }
+        });
       } catch (e) {
         this.resolveErrors(e);
       }

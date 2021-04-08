@@ -23,12 +23,12 @@
             </label>
             <input
               id="url"
-              v-model="form.url"
+              v-model="form.link"
               type="text"
               class="w-full p-1 text-xl border border-black focus:outline-none"
             />
-            <p v-if="errorMessage('url')" class="text-red-500">
-              {{ errorMessage("url") }}
+            <p v-if="errorMessage('link')" class="text-red-500">
+              {{ errorMessage("link") }}
             </p>
           </div>
           <!-- Image -->
@@ -77,15 +77,16 @@
 import Dropzone from "nuxt-dropzone";
 import "nuxt-dropzone/dropzone.css";
 export default {
-  props: ["errors"],
+  props: ["errors", "thread"],
+
   data() {
     return {
       form: {
-        title: "",
-        text: "",
-        link: "",
-        image: "",
-        type: "LINK"
+        title: this.thread?.title || "",
+        text: this.thread?.text || "",
+        link: this.thread?.link || "",
+        image: this.thread?.image || "",
+        type: this.thread?.type || "LINK"
       }
     };
   },

@@ -2,7 +2,7 @@
   <div>
     <h2 class="mb-4 text-2xl">Update post/link</h2>
 
-    <editor @saved="handleSaveThread" :errors="errors" />
+    <editor @saved="handleSaveThread" :errors="errors" :thread="thread" />
 
     <div class="mt-4">
       <div>
@@ -26,11 +26,20 @@
 import validation from "~/mixins/validation";
 export default {
   middleware: "auth",
-  name: "New",
+  name: "Update",
   head: {
     title: "Submit post/link"
   },
+  data() {
+    return {
+      thread: {}
+    };
+  },
   mixins: [validation],
+  async asyncData({ $axios, params }) {
+    const { data: thread } = await $axios.$get(`/api/threads/${params.slug}`);
+    return { thread };
+  },
   methods: {
     async handleSaveThread(data) {
       try {

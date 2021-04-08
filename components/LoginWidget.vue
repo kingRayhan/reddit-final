@@ -23,7 +23,7 @@
         class="w-1/2 px-3 py-1 border border-gray-600 focus:outline-none focus:border-primaryDark"
       />
     </div>
-    <div>
+    <div class="space-x-3 ">
       <nuxt-link :to="{ name: 'auth-forgot-password' }">
         Forgot password?
       </nuxt-link>

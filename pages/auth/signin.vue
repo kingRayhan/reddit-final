@@ -3,7 +3,7 @@
     <div
       class="col-span-6 col-start-4 p-5 border-2 border-dashed border-primaryDark"
     >
-      <div class="mb-3">
+      <div class="">
         <h3
           class="flex space-x-2 text-2xl font-bold uppercase text-primaryDark"
         >
@@ -25,9 +25,8 @@
         </h3>
       </div>
 
-      <form action="#" class="mt-5" @submit.prevent="resetPassword">
+      <form action="#" class="mt-5" @submit.prevent="handleLogin">
         <form-input
-          :disabled="true"
           placeholder="Your email address"
           label="Email address"
           v-model="form.email"
@@ -42,16 +41,44 @@
           :helperText="errorMessage('password')"
           :isError="Boolean(errorMessage('password'))"
         />
-        <form-input
-          placeholder="Confirm password"
-          label="Confirm password"
-          v-model="form.password_confirmation"
-          type="password"
-          :helperText="errorMessage('password_confirmation')"
-          :isError="Boolean(errorMessage('password_confirmation'))"
-        />
-        <form-button :loading="loading">Change password</form-button>
+
+        <div class="flex items-center space-x-3">
+          <form-button :loading="loading">Login</form-button>
+          <nuxt-link :to="{ name: 'auth-forgot-password' }">
+            Forgot password?
+          </nuxt-link>
+        </div>
       </form>
     </div>
   </div>
 </template>
+<script>
+import validation from "~/mixins/validation";
+export default {
+  head: {
+    title: "Login"
+  },
+  name: "Login-Page",
+  mixins: [validation],
+  data() {
+    return {
+      form: {
+        email: "",
+        password: ""
+      },
+      loading: false
+    };
+  },
+  methods: {
+    handleLogin() {
+      this.loading = true;
+      this.$auth
+        .loginWith("laravelSanctum", {
+          data: this.form
+        })
+        .catch(this.resolveErrors);
+      this.loading = false;
+    }
+  }
+};
+</script>

@@ -46,12 +46,12 @@
             {{ thread.title }}
           </nuxt-link>
           <a
-            v-if="thread.url"
-            :href="thread.url"
+            v-if="thread.link"
+            :href="thread.link"
             target="_blank"
             class="text-sm text-gray-500"
           >
-            ({{ hostName(thread.url) }})
+            ({{ hostName(thread.link) }})
           </a>
 
           <div class="flex">
@@ -86,13 +86,16 @@
                 >
                   Share
                 </button>
-                <a
+                <nuxt-link
                   v-if="$auth.loggedIn && $auth.user.id == thread.user.id"
                   class="mr-3 text-sm font-bold text-green-600 cursor-pointer"
-                  @click.prevent="destroy"
+                  :to="{
+                    name: 'threads-slug-edit',
+                    params: { slug: thread.slug }
+                  }"
                 >
                   Edit
-                </a>
+                </nuxt-link>
                 <a
                   v-if="$auth.loggedIn && $auth.user.id == thread.user.id"
                   class="text-sm font-bold text-red-600 cursor-pointer"
@@ -110,8 +113,8 @@
             <p v-else-if="thread.text">
               {{ thread.text }}
             </p>
-            <p v-else-if="thread.url">
-              <a :href="thread.url">{{ thread.url }}</a>
+            <p v-else-if="thread.link">
+              <a :href="thread.link">{{ thread.link }}</a>
             </p>
           </div>
         </div>
