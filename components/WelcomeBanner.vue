@@ -4,10 +4,20 @@
     <h4 class="mb-2 text-xl">
       Where a community about your favorite things is waiting for you.
     </h4>
-    <form-button>Button Become a Redditor </form-button>
+    <form-button @click="moveToRegisterPage">
+      Button Become a Redditor
+    </form-button>
   </section>
 </template>
-
+<script>
+export default {
+  methods: {
+    moveToRegisterPage() {
+      this.$router.push({ name: "auth-signup" });
+    }
+  }
+};
+</script>
 <style scoped>
 section {
   background-image: url("~static/images/welcome-banner.png");
