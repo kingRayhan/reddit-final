@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3 class="mb-4 font-bold uppercase text-primaryDark">
-      create a new account
+      Create a new account
     </h3>
 
     <form method="post" @submit.prevent="handleRegister">
@@ -46,6 +46,9 @@
 import validation from "~/mixins/validation";
 export default {
   mixins: [validation],
+  head: {
+    title: "Create a new account"
+  },
   data() {
     return {
       form: {

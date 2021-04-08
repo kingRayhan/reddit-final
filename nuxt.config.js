@@ -76,6 +76,12 @@ export default {
           }
         }
       }
+    },
+    redirect: {
+      login: "/auth/signin",
+      logout: "/",
+      callback: "/auth/login",
+      home: "/"
     }
   }
 };

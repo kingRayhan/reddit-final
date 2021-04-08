@@ -30,9 +30,12 @@
 </template>
 
 <script>
-import Thread from "~/components/Thread.vue";
 export default {
-  components: { Thread },
+  head() {
+    return {
+      title: this.thread.title
+    };
+  },
   async asyncData({ $axios, params }) {
     const { data: thread } = await $axios.$get(`/api/threads/${params.slug}`);
     return { thread };

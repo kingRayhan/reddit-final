@@ -1,6 +1,5 @@
 <template>
   <div class="mt-3">
-    <modal />
     <Thread
       class="mb-4"
       v-for="(thread, index) in resources"
@@ -22,9 +21,6 @@ import pagination from "~/mixins/pagination";
 export default {
   head: {
     title: "Home"
-  },
-  data() {
-    return {};
   },
   mixins: [pagination],
   async asyncData({ query, store, $axios }) {

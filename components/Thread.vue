@@ -1,5 +1,8 @@
 <template>
   <div v-bind="$attrs">
+    <modal v-model="showShareModal">
+      <ShareThread :threadUrl="`/threads/${thread.slug}`" />
+    </modal>
     <div class="thread">
       <div class="thread__votes">
         <button
@@ -79,6 +82,7 @@
 
                 <button
                   class="mr-3 text-sm font-bold text-gray-600 hover:underline"
+                  @click="showShareModal = true"
                 >
                   Share
                 </button>
@@ -121,7 +125,8 @@ export default {
   data() {
     return {
       isLiked: false,
-      isUnliked: true
+      isUnliked: true,
+      showShareModal: false
     };
   },
   methods: {

@@ -56,9 +56,9 @@
             </label>
             <textarea
               id="text"
+              ref="threadText"
               v-model="form.text"
-              rows="5"
-              class="w-full p-1 text-xl border border-black focus:outline-none"
+              class="w-full p-1 overflow-y-hidden text-xl border border-black focus:outline-none"
             />
             <p v-if="errorMessage('text')" class="text-red-500">
               {{ errorMessage("text") }}
@@ -91,6 +91,14 @@ export default {
   },
   components: {
     Dropzone
+  },
+  watch: {
+    "form.text"() {
+      // Auto height textarea
+      const textAreaDOM = this.$refs.threadText;
+      textAreaDOM.style.height = "64px";
+      textAreaDOM.style.height = textAreaDOM.scrollHeight + "px";
+    }
   },
   methods: {
     handleThumbnail(_, response) {
