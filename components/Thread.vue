@@ -7,16 +7,20 @@
       <div class="thread__votes">
         <button
           class="arrow arrow--up-vote"
-          :class="{ 'arrow--up-vote--voted': true }"
+          :class="{ 'arrow--up-vote--voted': isUpVoted }"
+          @click="upvote"
         ></button>
 
-        <div class="text-sm font-bold text-gray-600">14</div>
+        <div class="text-sm font-bold text-gray-600">
+          {{ voteScores }}
+        </div>
 
         <button
           class="arrow arrow--down-vote"
           :class="{
-            'arrow--down-vote--voted': false
+            'arrow--down-vote--voted': isDownVoted
           }"
+          @click="downvote"
         ></button>
       </div>
 
@@ -32,9 +36,10 @@
             }"
           ></nuxt-link>
           <nuxt-link
+            v-else
             :to="{ name: 'threads-slug', params: { slug: thread.slug } }"
           >
-            <img class="w-14 " :src="thread.image" alt="" />
+            <img class="w-14 " :src="thread.image" :alt="thread.title" />
           </nuxt-link>
         </div>
 
@@ -127,10 +132,23 @@ export default {
   props: ["thread", "expanded"],
   data() {
     return {
-      isLiked: false,
-      isUnliked: true,
-      showShareModal: false
+      showShareModal: false,
+      voteScores: this.thread.voteScores
     };
+  },
+  computed: {
+    isUpVoted() {
+      return (
+        this.$auth.loggedIn &&
+        this.thread.upVotedBy.includes(this.$auth.user.id)
+      );
+    },
+    isDownVoted() {
+      return (
+        this.$auth.loggedIn &&
+        this.thread.downVotedBy.includes(this.$auth.user.id)
+      );
+    }
   },
   methods: {
     hostName(fullUrl) {
@@ -142,6 +160,25 @@ export default {
         await this.$axios.$delete(`/api/threads/${this.thread.slug}`);
         this.$emit("removed", this.thread.id);
       }
+    },
+    async upvote() {
+      try {
+        await this.$axios.$post("/api/votes/up", {
+          resource_type: "thread",
+          resource_id: this.thread.id
+        });
+
+        this.voteScores++;
+      } catch (error) {}
+    },
+    async downvote() {
+      try {
+        await this.$axios.$post("/api/votes/down", {
+          resource_type: "thread",
+          resource_id: this.thread.id
+        });
+        this.voteScores--;
+      } catch (error) {}
     }
   }
 };
