@@ -7,20 +7,20 @@
       <div class="thread__votes">
         <button
           class="arrow arrow--up-vote"
-          :class="{ 'arrow--up-vote--voted': isUpVoted }"
-          @click="upvote"
+          :class="{ 'arrow--up-vote--voted': isUpvoted }"
+          @click="upVote"
         ></button>
 
         <div class="text-sm font-bold text-gray-600">
-          {{ voteScores }}
+          {{ thread.voteScores }}
         </div>
 
         <button
           class="arrow arrow--down-vote"
           :class="{
-            'arrow--down-vote--voted': isDownVoted
+            'arrow--down-vote--voted': isDownvoted
           }"
-          @click="downvote"
+          @click="downVote"
         ></button>
       </div>
 
@@ -133,21 +133,28 @@ export default {
   data() {
     return {
       showShareModal: false,
-      voteScores: this.thread.voteScores
-    };
-  },
-  computed: {
-    isUpVoted() {
-      return (
+      isUpvoted:
         this.$auth.loggedIn &&
-        this.thread.upVotedBy.includes(this.$auth.user.id)
-      );
-    },
-    isDownVoted() {
-      return (
+        this.thread.upVotedBy.includes(this.$auth.user.id),
+      isDownvoted:
         this.$auth.loggedIn &&
         this.thread.downVotedBy.includes(this.$auth.user.id)
-      );
+    };
+  },
+  watch: {
+    isUpvoted(_, oldVote) {
+      if (oldVote) {
+        this.thread.voteScores--;
+      } else {
+        this.thread.voteScores++;
+      }
+    },
+    isDownvoted(_, oldVote) {
+      if (oldVote) {
+        this.thread.voteScores++;
+      } else {
+        this.thread.voteScores--;
+      }
     }
   },
   methods: {
@@ -161,24 +168,32 @@ export default {
         this.$emit("removed", this.thread.id);
       }
     },
-    async upvote() {
+    async upVote() {
+      if (!this.$auth.loggedIn) {
+        return this.$store.commit("alert/SHOW_ERROR", "You are not logged in");
+      }
       try {
         await this.$axios.$post("/api/votes/up", {
           resource_type: "thread",
           resource_id: this.thread.id
         });
-
-        this.voteScores++;
       } catch (error) {}
+      this.isUpvoted = !this.isUpvoted;
+      this.isDownvoted = false;
     },
-    async downvote() {
+    async downVote() {
+      if (!this.$auth.loggedIn) {
+        return this.$store.commit("alert/SHOW_ERROR", "You are not logged in");
+      }
       try {
         await this.$axios.$post("/api/votes/down", {
           resource_type: "thread",
           resource_id: this.thread.id
         });
-        this.voteScores--;
       } catch (error) {}
+
+      this.isDownvoted = !this.isDownvoted;
+      this.isUpvoted = false;
     }
   }
 };
