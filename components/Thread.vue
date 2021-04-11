@@ -172,28 +172,27 @@ export default {
       if (!this.$auth.loggedIn) {
         return this.$store.commit("alert/SHOW_ERROR", "You are not logged in");
       }
+      this.isUpvoted = !this.isUpvoted;
+      this.isDownvoted = false;
       try {
         await this.$axios.$post("/api/votes/up", {
           resource_type: "thread",
           resource_id: this.thread.id
         });
       } catch (error) {}
-      this.isUpvoted = !this.isUpvoted;
-      this.isDownvoted = false;
     },
     async downVote() {
       if (!this.$auth.loggedIn) {
         return this.$store.commit("alert/SHOW_ERROR", "You are not logged in");
       }
+      this.isDownvoted = !this.isDownvoted;
+      this.isUpvoted = false;
       try {
         await this.$axios.$post("/api/votes/down", {
           resource_type: "thread",
           resource_id: this.thread.id
         });
       } catch (error) {}
-
-      this.isDownvoted = !this.isDownvoted;
-      this.isUpvoted = false;
     }
   }
 };
