@@ -5,7 +5,7 @@
       Where a community about your favorite things is waiting for you.
     </h4>
     <form-button @click="moveToRegisterPage">
-      Button Become a Redditor
+      Become a Redditor
     </form-button>
   </section>
 </template>

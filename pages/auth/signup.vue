@@ -38,7 +38,7 @@
         :isError="Boolean(errorMessage('password_confirmation'))"
       />
 
-      <form-button :loading="loading">Login</form-button>
+      <form-button :loading="loading">Signup</form-button>
     </form>
   </div>
 </template>

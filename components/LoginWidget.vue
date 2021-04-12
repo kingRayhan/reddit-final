@@ -23,12 +23,23 @@
         class="w-1/2 px-3 py-1 border border-gray-600 focus:outline-none focus:border-primaryDark"
       />
     </div>
-    <div class="space-x-3 ">
+    <div class="flex items-center justify-between w-full">
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="remember" v-model="form.remember" />
+        <label for="remember">remember me</label>
+      </div>
+
       <nuxt-link :to="{ name: 'auth-forgot-password' }">
-        Forgot password?
+        reset password
       </nuxt-link>
+
       <button class="px-3 mt-2 bg-gray-200 border border-gray-600 ">
-        Login
+        <span v-if="loading">
+          Loading....
+        </span>
+        <span v-else>
+          Login
+        </span>
       </button>
     </div>
   </form>
@@ -42,17 +53,24 @@ export default {
     return {
       form: {
         email: "",
-        password: ""
-      }
+        password: "",
+        remember: true
+      },
+      loading: false
     };
   },
   methods: {
-    handleLogin() {
-      this.$auth
-        .loginWith("laravelSanctum", {
+    async handleLogin() {
+      this.loading = true;
+      try {
+        await this.$auth.loginWith("laravelSanctum", {
           data: this.form
-        })
-        .catch(this.resolveErrors);
+        });
+      } catch (error) {
+        this.resolveErrors(error);
+      }
+
+      this.loading = false;
     }
   }
 };
