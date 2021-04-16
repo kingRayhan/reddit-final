@@ -14,15 +14,20 @@
     <!-- voting end -->
 
     <div class="mb-4 ml-5">
-      <a class="font-bold" href="#"> u/rayhan </a>
+      <nuxt-link
+        class="font-bold"
+        :to="{
+          name: 'u-username',
+          params: { username: comment.user.username }
+        }"
+      >
+        u/{{ comment.user.username }}
+      </nuxt-link>
       <span class="text-sm text-gray-600">
-        145 point(s) ( 4 minutes ago )
+        145 point(s) ( {{ comment.created_at }} )
       </span>
       <p class="text-xl">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae dolor
-        pariatur reiciendis facilis placeat architecto temporibus iste et at
-        dolorem velit impedit eum similique necessitatibus praesentium,
-        reprehenderit quos repellat hic!
+        {{ comment.text }}
       </p>
 
       <div>
@@ -35,5 +40,19 @@
         </a>
       </div>
     </div>
+
+    <div v-if="comment.replies">
+      <comment
+        v-for="comment in comment.replies"
+        :comment="comment"
+        :key="comment.id"
+      />
+    </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["comment"]
+};
+</script>

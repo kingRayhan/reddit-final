@@ -13,6 +13,7 @@
       />
 
       <div
+        class="text-center "
         v-observe-visibility="visibilityChanged"
         v-if="current_page < last_page"
       >

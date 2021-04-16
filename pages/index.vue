@@ -14,6 +14,7 @@
 
     <div
       v-observe-visibility="visibilityChanged"
+      class="text-center"
       v-if="current_page < last_page"
     >
       <Loading />
@@ -22,23 +23,12 @@
 </template>
 
 <script>
-import pagination from "~/mixins/pagination";
+import resource from "~/mixins/resource";
 export default {
   head: {
     title: "Home"
   },
-  mixins: [pagination],
-  async asyncData({ query, store, $axios }) {
-    if (query.verified == 1)
-      store.commit("alert/SHOW_SUCCESS", "Your accout is active now");
-
-    const threads = await $axios.$get("/api/threads");
-    return {
-      resources: threads.data,
-      current_page: threads.meta.current_page,
-      last_page: threads.meta.last_page
-    };
-  },
+  mixins: [resource("threads")],
   methods: {
     handleAfterThreadDeleted(threadId) {
       this.resources = this.resources.filter(thread => thread.id !== threadId);
