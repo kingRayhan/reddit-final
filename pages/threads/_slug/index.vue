@@ -1,6 +1,6 @@
 <template>
-  <div v-if="$fetchState.pending">
-    <h1 class="text-4xl ">Loading</h1>
+  <div v-if="$fetchState.pending" class="text-center ">
+    <Loading />
   </div>
   <div v-else>
     <thread

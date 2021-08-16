@@ -4,6 +4,10 @@
       <welcome-banner />
     </div>
 
+    <div v-if="$fetchState.pending" class="text-center ">
+      <Loading />
+    </div>
+
     <Thread
       class="mb-4"
       v-for="(thread, index) in resources"
