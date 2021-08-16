@@ -1,0 +1,49 @@
+<template>
+  <nav class="navbar">
+    <alert />
+    <div class="container navbar__inner">
+      <nuxt-link class="navbar__logo" to="/"></nuxt-link>
+
+      <div class="navbar__user-menu" v-if="$auth.loggedIn">
+        Howdy
+        <nuxt-link
+          class="font-bold"
+          :to="{
+            name: 'u-username',
+            params: { username: $auth.user.username }
+          }"
+        >
+          /r/{{ $auth.user.username }}
+        </nuxt-link>
+        <nuxt-link class="text-xs text-gray-700" to="/settings">
+          (settings)
+        </nuxt-link>
+        <span class="font-thin">|</span>
+        <a href="#" to="/notifications"> Notifications (14) </a>
+        <span class="font-thin">|</span>
+        <a href="#" class="cursor-pointer" @click="logout">Logout</a>
+      </div>
+
+      <div class="navbar__user-menu" v-else>
+        Want to join?
+        <nuxt-link :to="{ name: 'auth-signin' }">Log in</nuxt-link> or
+        <nuxt-link :to="{ name: 'auth-signup' }">Signup</nuxt-link>
+        in a seconds.
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    logout() {
+      if (!confirm("Sure to logout?")) return;
+      this.$auth.logout();
+    }
+  }
+};
+</script>
