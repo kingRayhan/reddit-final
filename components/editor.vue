@@ -36,7 +36,9 @@
             <div
               class="p-3 mt-5 border-2 border-dashed rounded-md border-primaryDark"
             >
-              <FileUploader @fileUploaded="url => (form.image = url)" />
+              <div v-if="!form.image">
+                <FileUploader @fileUploaded="url => (form.image = url)" />
+              </div>
               <div v-if="form.image">
                 <button
                   type="button"
@@ -46,8 +48,8 @@
                   <span class="text-4xl text-red-500">&times;</span>
                   <span class="text-xl ">Remove</span>
                 </button>
-                <div class=" w-52">
-                  <img :src="form.image" />
+                <div>
+                  <img class="max-w-full " :src="form.image" />
                 </div>
               </div>
             </div>
