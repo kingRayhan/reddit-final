@@ -45,3 +45,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.filepond--credits {
+  display: none;
+}
+</style>
