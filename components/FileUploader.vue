@@ -16,6 +16,7 @@ import "filepond/dist/filepond.min.css";
 // Import image preview and file type validation plugins
 // import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 // import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+//
 
 const FilePond = VueFilePond();
 // FilePondPluginFileValidateType
