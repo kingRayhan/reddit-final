@@ -37,6 +37,19 @@
               class="p-3 mt-5 border-2 border-dashed rounded-md border-primaryDark"
             >
               <FileUploader @fileUploaded="url => (form.image = url)" />
+              <div v-if="form.image">
+                <button
+                  type="button"
+                  @click="removeThumbnail"
+                  class="flex items-center mb-5 space-x-2 "
+                >
+                  <span class="text-4xl text-red-500">&times;</span>
+                  <span class="text-xl ">Remove</span>
+                </button>
+                <div class=" w-52">
+                  <img :src="form.image" />
+                </div>
+              </div>
             </div>
           </Tab>
           <Tab title="Text" :active="form.type == 'TEXT'">
@@ -98,7 +111,7 @@ export default {
     errorMessage(key) {
       if (this.errors[key]) return this.errors[key].join(" ");
     },
-    removeImage() {
+    removeThumbnail() {
       this.form.image = "";
     }
   }

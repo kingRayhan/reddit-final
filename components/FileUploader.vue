@@ -9,19 +9,17 @@
 </template>
 
 <script>
-// dd
 import VueFilePond from "vue-filepond";
 import "filepond/dist/filepond.min.css";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
+// import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
 // Import image preview and file type validation plugins
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+// import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 
-const FilePond = VueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
-);
+const FilePond = VueFilePond();
+// FilePondPluginFileValidateType
+// FilePondPluginImagePreview
 
 export default {
   data() {
