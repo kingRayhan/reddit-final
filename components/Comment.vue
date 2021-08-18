@@ -25,7 +25,7 @@
           u/{{ comment.user.username }}
         </nuxt-link>
         <span class="text-sm text-gray-600">
-          145 point(s) ( {{ comment.created_at }} )
+          145 point(s) ( {{ $time(comment.created_at).fromNow() }} )
         </span>
         <p class="text-xl">
           {{ comment.text }}

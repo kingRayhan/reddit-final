@@ -3,20 +3,20 @@ export default {
   head: {
     titleTemplate: "%s - Reddit",
     htmlAttrs: {
-      lang: "en",
+      lang: "en"
     },
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
+      { hid: "description", name: "description", content: "" }
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/images/favicon-96x96.png" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Open+Sans&display=swap",
-      },
-    ],
+        href: "https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -27,6 +27,7 @@ export default {
     "~/plugins/axios",
     "~/plugins/tabs.client",
     "~/plugins/visibility.client",
+    "~/plugins/time"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,22 +42,22 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     minifyCSS: true,
-    minifyJS: true,
+    minifyJS: true
   },
 
   loading: {
     color: "#4270a2",
-    height: "5px",
+    height: "5px"
   },
 
   tailwindcss: {
     cssPath: "~/assets/styles/app.scss",
-    jit: true,
+    jit: true
   },
 
   axios: {
     credentials: true,
-    baseURL: process.env.NUXT_ENV_API,
+    baseURL: process.env.NUXT_ENV_API
   },
 
   auth: {
@@ -66,25 +67,25 @@ export default {
         url: process.env.NUXT_ENV_API,
         endpoints: {
           login: {
-            url: "/api/auth/login",
+            url: "/api/auth/login"
           },
           logout: {
             url: "/api/auth/logout",
-            method: "post",
+            method: "post"
           },
           user: {
             url: "/api/user",
             propertyName: false,
-            autoFetch: false,
-          },
-        },
-      },
+            autoFetch: false
+          }
+        }
+      }
     },
     redirect: {
       login: "/auth/signin",
       logout: "/",
       callback: "/auth/login",
-      home: "/",
-    },
-  },
+      home: "/"
+    }
+  }
 };

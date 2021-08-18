@@ -5,6 +5,9 @@ export default {
     };
   },
   methods: {
+    clearErrors() {
+      this.errors = {};
+    },
     errorMessage(key) {
       if (this.errors[key]) return this.errors[key].join(" ");
     },

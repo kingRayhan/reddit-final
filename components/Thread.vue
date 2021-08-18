@@ -82,7 +82,7 @@
 
               <div>
                 <span class="mr-3 text-sm font-bold text-gray-600">
-                  74 comments
+                  {{ thread.comments_count }} comments
                 </span>
 
                 <button
