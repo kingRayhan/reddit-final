@@ -16,5 +16,9 @@ export default ({ $axios, redirect, store, app }) => {
       });
       store.commit("alert/SHOW_ERROR", error.response.data.message);
     }
+
+    if (error.response.status >= 400) {
+      store.commit("alert/SHOW_ERROR", error.response.data.message);
+    }
   });
 };

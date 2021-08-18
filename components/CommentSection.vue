@@ -20,7 +20,7 @@
         :key="comment.id"
       />
     </div>
-    <!-- <div
+    <div
       class="text-center"
       v-if="commentsMeta.current_page < commentsMeta.last_page"
     >
@@ -31,7 +31,7 @@
       >
         Load Mores
       </a>
-    </div> -->
+    </div>
   </div>
 </template>
 <script>
@@ -50,11 +50,11 @@ export default {
     };
   },
   async fetch() {
-    const { data: comments, last_page } = await this.$axios.$get(
+    const { data: comments, meta } = await this.$axios.$get(
       `/api/comments/${this.thread_id}`
     );
     this.comments = comments;
-    this.commentsMeta.last_page = last_page;
+    this.commentsMeta.last_page = meta.last_page;
   },
   methods: {
     async postComment() {
@@ -77,7 +77,7 @@ export default {
       this.commentsMeta.current_page += 1;
 
       const { data: comments } = await this.$axios.$get(
-        `/api/comments/${this.thread.id}&page=${this.commentsMeta.current_page}`
+        `/api/comments/${this.thread_id}?page=${this.commentsMeta.current_page}`
       );
 
       this.comments = this.comments.concat(comments);

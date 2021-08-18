@@ -32,7 +32,12 @@
         </p>
 
         <div>
-          <a href="#" class="mr-2 text-sm font-bold text-red-600">
+          <a
+            v-if="$auth.loggedIn && $auth.user.id == comment.user.id"
+            href="#"
+            @click.prevent="deleteComment"
+            class="mr-2 text-sm font-bold text-red-600"
+          >
             Delete
           </a>
 
@@ -54,6 +59,16 @@
 
 <script>
 export default {
-  props: ["comment"]
+  props: ["comment"],
+  methods: {
+    async deleteComment(id) {
+      if (confirm("sure to delete?")) {
+        try {
+          await this.$axios.$delete(`/api/comments/${this.comment.id}`);
+          this.$emit("removed", this.thread.id);
+        } catch (error) {}
+      }
+    }
+  }
 };
 </script>
