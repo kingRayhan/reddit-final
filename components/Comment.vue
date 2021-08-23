@@ -19,21 +19,21 @@
           class="font-bold"
           :to="{
             name: 'u-username',
-            params: { username: comment.user.username }
+            params: { username: commentCopy.user.username }
           }"
         >
-          u/{{ comment.user.username }}
+          u/{{ commentCopy.user.username }}
         </nuxt-link>
         <span class="text-sm text-gray-600">
-          145 point(s) ( {{ $time(comment.created_at).fromNow() }} )
+          145 point(s) ( {{ $time(commentCopy.created_at).fromNow() }} )
         </span>
         <p class="text-xl">
-          {{ comment.text }}
+          {{ commentCopy.text }}
         </p>
 
         <div>
           <a
-            v-if="$auth.loggedIn && $auth.user.id == comment.user.id"
+            v-if="$auth.loggedIn && $auth.user.id == commentCopy.user.id"
             href="#"
             @click.prevent="deleteComment"
             class="mr-2 text-sm font-bold text-red-600"
@@ -41,17 +41,33 @@
             Delete
           </a>
 
-          <a href="#" class="mr-2 text-sm font-bold text-gray-600">
-            <span>Reply</span>
+          <a
+            href="#"
+            @click.prevent="replyOpen = !replyOpen"
+            class="mr-2 text-sm font-bold text-gray-600"
+          >
+            <span v-if="!replyOpen">Reply</span>
+            <span v-if="replyOpen">Close</span>
           </a>
+
+          <form v-if="replyOpen" @submit.prevent="postReply(comment.id)">
+            <textarea
+              v-model="newReply"
+              class="w-full p-2 border-2 border-gray-600"
+            ></textarea>
+            <form-button>post</form-button>
+          </form>
         </div>
       </div>
     </div>
-    <div v-if="comment.replies" class="ml-8 border-l-2">
+
+    <div v-if="commentCopy.replies" class="ml-8 border-l-2">
       <comment
-        v-for="comment in comment.replies"
+        v-for="comment in commentCopy.replies"
         :comment="comment"
         :key="comment.id"
+        @commentDeleted="cleanupComment"
+        :thread_id="thread_id"
       />
     </div>
   </div>
@@ -59,15 +75,40 @@
 
 <script>
 export default {
-  props: ["comment"],
+  props: ["comment", "thread_id"],
+  data() {
+    return {
+      replyOpen: false,
+      newReply: "",
+      commentCopy: JSON.parse(JSON.stringify(this.comment))
+    };
+  },
   methods: {
-    async deleteComment(id) {
+    cleanupComment(comment) {
+      const index = this.commentCopy.replies.findIndex(c => c.id == comment.id);
+      this.commentCopy.replies.splice(index, 1);
+    },
+    async deleteComment() {
       if (confirm("sure to delete?")) {
         try {
-          await this.$axios.$delete(`/api/comments/${this.comment.id}`);
-          this.$emit("removed", this.thread.id);
+          const comment = await this.$axios.$delete(
+            `/api/comments/${this.comment.id}`
+          );
+          this.$emit("commentDeleted", comment.data);
         } catch (error) {}
       }
+    },
+
+    async postReply(reply_to) {
+      try {
+        const reply = await this.$axios.$post(
+          `/api/comments/${this.thread_id}?reply_to=${reply_to}`,
+          { text: this.newReply }
+        );
+        this.replyOpen = false;
+        this.newReply = "";
+        this.commentCopy.replies = [reply.data, ...this.commentCopy.replies];
+      } catch (error) {}
     }
   }
 };

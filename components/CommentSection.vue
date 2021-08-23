@@ -17,6 +17,8 @@
       <comment
         v-for="comment in comments"
         :comment="comment"
+        @commentDeleted="handleDeleteComment"
+        :thread_id="thread_id"
         :key="comment.id"
       />
     </div>
@@ -36,6 +38,7 @@
 </template>
 <script>
 import validation from "~/mixins/validation";
+import _ from "underscore";
 export default {
   props: ["thread_id"],
   mixins: [validation],
@@ -81,6 +84,11 @@ export default {
       );
 
       this.comments = this.comments.concat(comments);
+    },
+    handleDeleteComment(comment) {
+      const index = this.comments.findIndex(c => c.id == comment.id);
+      console.log(index);
+      this.comments.splice(index, 1);
     }
   }
 };
