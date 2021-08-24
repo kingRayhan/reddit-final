@@ -4,12 +4,14 @@
       <!-- voting start -->
       <div class="vote">
         <button
+          @click="upVote"
           class="arrow arrow--up-vote"
-          :class="{ 'arrow--up-vote--voted': true }"
+          :class="{ 'arrow--up-vote--voted': isUpvoted }"
         ></button>
         <button
+          @click="downVote"
           class="arrow arrow--down-vote"
-          :class="{ 'arrow--down-vote--voted': false }"
+          :class="{ 'arrow--down-vote--voted': isDownvoted }"
         ></button>
       </div>
       <!-- voting end -->
@@ -19,21 +21,22 @@
           class="font-bold"
           :to="{
             name: 'u-username',
-            params: { username: commentCopy.user.username }
+            params: { username: comment.user.username }
           }"
         >
-          u/{{ commentCopy.user.username }}
+          u/{{ comment.user.username }}
         </nuxt-link>
         <span class="text-sm text-gray-600">
-          145 point(s) ( {{ $time(commentCopy.created_at).fromNow() }} )
+          {{ comment.voteScores }} point(s) (
+          {{ $time(comment.created_at).fromNow() }} )
         </span>
         <p class="text-xl">
-          {{ commentCopy.text }}
+          {{ comment.text }}
         </p>
 
         <div>
           <a
-            v-if="$auth.loggedIn && $auth.user.id == commentCopy.user.id"
+            v-if="$auth.loggedIn && $auth.user.id == comment.user.id"
             href="#"
             @click.prevent="deleteComment"
             class="mr-2 text-sm font-bold text-red-600"
@@ -61,9 +64,9 @@
       </div>
     </div>
 
-    <div v-if="commentCopy.replies" class="ml-8 border-l-2">
+    <div v-if="comment.replies" class="ml-8 border-l-2">
       <comment
-        v-for="comment in commentCopy.replies"
+        v-for="comment in comment.replies"
         :comment="comment"
         :key="comment.id"
         @commentDeleted="cleanupComment"
@@ -80,13 +83,34 @@ export default {
     return {
       replyOpen: false,
       newReply: "",
-      commentCopy: JSON.parse(JSON.stringify(this.comment))
+      isUpvoted:
+        this.$auth.loggedIn &&
+        this.comment.upVotedBy.includes(this.$auth.user.id),
+      isDownvoted:
+        this.$auth.loggedIn &&
+        this.comment.downVotedBy.includes(this.$auth.user.id)
     };
+  },
+  watch: {
+    isUpvoted(_, oldVote) {
+      if (oldVote) {
+        this.comment.voteScores--;
+      } else {
+        this.comment.voteScores++;
+      }
+    },
+    isDownvoted(_, oldVote) {
+      if (oldVote) {
+        this.comment.voteScores++;
+      } else {
+        this.comment.voteScores--;
+      }
+    }
   },
   methods: {
     cleanupComment(comment) {
-      const index = this.commentCopy.replies.findIndex(c => c.id == comment.id);
-      this.commentCopy.replies.splice(index, 1);
+      const index = this.comment.replies.findIndex(c => c.id == comment.id);
+      this.comment.replies.splice(index, 1);
     },
     async deleteComment() {
       if (confirm("sure to delete?")) {
@@ -107,7 +131,33 @@ export default {
         );
         this.replyOpen = false;
         this.newReply = "";
-        this.commentCopy.replies = [reply.data, ...this.commentCopy.replies];
+        this.comment.replies = [reply.data, ...this.comment.replies];
+      } catch (error) {}
+    },
+    async upVote() {
+      if (!this.$auth.loggedIn) {
+        return this.$store.commit("alert/SHOW_ERROR", "You are not logged in");
+      }
+      this.isUpvoted = !this.isUpvoted;
+      this.isDownvoted = false;
+      try {
+        await this.$axios.$post("/api/votes/up", {
+          resource_type: "comment",
+          resource_id: this.comment.id
+        });
+      } catch (error) {}
+    },
+    async downVote() {
+      if (!this.$auth.loggedIn) {
+        return this.$store.commit("alert/SHOW_ERROR", "You are not logged in");
+      }
+      this.isDownvoted = !this.isDownvoted;
+      this.isUpvoted = false;
+      try {
+        await this.$axios.$post("/api/votes/down", {
+          resource_type: "comment",
+          resource_id: this.comment.id
+        });
       } catch (error) {}
     }
   }

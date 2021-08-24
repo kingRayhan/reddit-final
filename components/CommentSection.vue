@@ -38,7 +38,6 @@
 </template>
 <script>
 import validation from "~/mixins/validation";
-import _ from "underscore";
 export default {
   props: ["thread_id"],
   mixins: [validation],
