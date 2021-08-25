@@ -19,7 +19,9 @@
           (settings)
         </nuxt-link>
         <span class="font-thin">|</span>
-        <a href="#" to="/notifications"> Notifications (14) </a>
+        <nuxt-link to="/notifications">
+          Notifications ({{ ureadsCount }})
+        </nuxt-link>
         <span class="font-thin">|</span>
         <a href="#" class="cursor-pointer" @click="logout">Logout</a>
       </div>
@@ -35,6 +37,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {};
@@ -44,6 +47,7 @@ export default {
       if (!confirm("Sure to logout?")) return;
       this.$auth.logout();
     }
-  }
+  },
+  computed: mapGetters("notification", ["ureadsCount"])
 };
 </script>
