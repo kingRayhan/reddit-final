@@ -6,6 +6,10 @@ export const state = () => ({
 });
 
 export const mutations = {
+  UNSHIFT_NOTIFICATION: (state, payload) => {
+    state.unreads.unshift(payload);
+    state.all.unshift(payload);
+  },
   SET_ALL: (state, payload) => (state.all = payload),
   SET_UNREADS: (state, payload) => (state.unreads = payload),
   SET_READS: (state, payload) => (state.reads = payload),

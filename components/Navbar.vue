@@ -42,6 +42,17 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    if (this.$auth.loggedIn) {
+      this.$echo
+        .private("App.Models.User." + this.$auth.user.id)
+        .notification(notification => {
+          const audio = new Audio("notification.mp3");
+          audio.play();
+          this.$store.commit("notification/UNSHIFT_NOTIFICATION", notification);
+        });
+    }
+  },
   methods: {
     logout() {
       if (!confirm("Sure to logout?")) return;

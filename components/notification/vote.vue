@@ -9,7 +9,9 @@
     <div>
       <nuxt-link :to="link">
         <p class="text-gray-600 ">
-          {{ notification.responsible.username }} commented on your thread
+          r/{{ notification.responsible.username }}
+          {{ notification.notifiable_to.vote }} votted your
+          {{ notification.notifiable_to.type }}
         </p>
         <p class="text-lg italic">{{ notification.data }}</p>
       </nuxt-link>
@@ -51,9 +53,7 @@ export default {
         path: "notifications/preview",
         query: {
           type: this.notification.notifiable_to.type,
-          resource_id: this.notification.notifiable_to.id,
-          thread_id: this.notification.notifiable_to.thread_id,
-          thread_slug: this.notification.notifiable_to.thread_slug
+          resource_id: this.notification.notifiable_to.id
         }
       };
     }

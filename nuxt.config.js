@@ -27,7 +27,8 @@ export default {
     "~/plugins/axios",
     "~/plugins/tabs.client",
     "~/plugins/visibility.client",
-    "~/plugins/time"
+    "~/plugins/time",
+    "~/plugins/echo.client"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

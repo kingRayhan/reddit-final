@@ -7,12 +7,12 @@
     }"
   >
     <div>
-      <a href="#">
+      <nuxt-link :to="link">
         <p class="text-gray-600 ">
           {{ notification.responsible.username }} replied on your comment
         </p>
         <p class="text-lg italic">{{ notification.data }}</p>
-      </a>
+      </nuxt-link>
     </div>
     <div>
       <button
@@ -44,6 +44,19 @@ export default {
   props: ["notification"],
   methods: {
     ...mapActions("notification", ["markAsRead", "markAsUnread", "destroy"])
+  },
+  computed: {
+    link() {
+      return {
+        path: "notifications/preview",
+        query: {
+          type: this.notification.notifiable_to.type,
+          resource_id: this.notification.notifiable_to.id,
+          thread_id: this.notification.notifiable_to.thread_id,
+          thread_slug: this.notification.notifiable_to.thread_slug
+        }
+      };
+    }
   }
 };
 </script>

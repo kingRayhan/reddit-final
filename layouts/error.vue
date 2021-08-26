@@ -12,6 +12,9 @@
 <script>
 export default {
   layout: "fullwidth",
-  props: ["error"]
+  props: ["error"],
+  async fetch() {
+    if (this.$auth.loggedIn) await this.$store.dispatch("notification/load");
+  }
 };
 </script>

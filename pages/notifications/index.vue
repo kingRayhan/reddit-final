@@ -20,11 +20,13 @@
       </form-button>
     </div>
 
-    <div v-for="notification in notifications" :key="notification.id">
-      <component
-        :is="`notification-${notification.type}`"
-        :notification="notification"
-      />
+    <div v-if="notifications.length">
+      <div v-for="notification in notifications" :key="notification.id">
+        <component
+          :is="`notification-${notification.notification_for}`"
+          :notification="notification"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -32,9 +34,6 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   middleware: ["auth"],
-  async asyncData({ store }) {
-    await store.dispatch("notification/load");
-  },
   head: {
     title: "Notifications"
   },
