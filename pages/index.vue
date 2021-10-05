@@ -37,6 +37,9 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    this.$echo.leave("threads");
+  },
   head: {
     title: "Home"
   },

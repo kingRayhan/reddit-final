@@ -91,6 +91,18 @@ export default {
         this.comment.downVotedBy.includes(this.$auth.user.id)
     };
   },
+  mounted() {
+    this.$echo
+      .channel(`votes.comment.${this.comment.id}`)
+      .listen("VoteUpdated", vote => {
+        if (this.$auth.loggedIn && vote.actor_id == this.$auth.user.id) return;
+
+        this.comment.voteScores = vote.voteScores;
+      });
+  },
+  beforeDestroy() {
+    this.$echo.leave(`votes.thread.${this.thread.id}`);
+  },
   watch: {
     isUpvoted(_, oldVote) {
       if (oldVote) {

@@ -130,6 +130,18 @@
 <script>
 export default {
   props: ["thread", "expanded"],
+  mounted() {
+    this.$echo
+      .channel(`votes.thread.${this.thread.id}`)
+      .listen("VoteUpdated", vote => {
+        if (this.$auth.loggedIn && vote.actor_id == this.$auth.user.id) return;
+
+        this.thread.voteScores = vote.voteScores;
+      });
+  },
+  beforeDestroy() {
+    this.$echo.leave(`votes.thread.${this.thread.id}`);
+  },
   data() {
     return {
       showShareModal: false,
