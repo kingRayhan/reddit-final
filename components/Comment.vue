@@ -101,7 +101,7 @@ export default {
       });
   },
   beforeDestroy() {
-    this.$echo.leave(`votes.thread.${this.thread.id}`);
+    this.$echo.leave(`votes.comment.${this.comment.id}`);
   },
   watch: {
     isUpvoted(_, oldVote) {
