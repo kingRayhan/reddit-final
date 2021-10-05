@@ -11,6 +11,7 @@
   "dependencies": {
     "@nuxtjs/auth-next": "5.0.0-1616003482.75c20e6",
     "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/laravel-echo": "^1.1.0",
     "@tailwindcss/jit": "^0.1.18",
     "core-js": "^3.8.3",
     "dayjs": "^1.10.6",
@@ -25,7 +26,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^4.0.2",
     "fibers": "^5.0.0",
-    "laravel-echo": "^1.11.1",
+    "laravel-echo": "^1.11.2",
     "postcss": "^8.2.9",
     "pusher-js": "^7.0.3",
     "sass": "^1.32.8",

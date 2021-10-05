@@ -28,7 +28,15 @@
 
 <script>
 import resource from "~/mixins/resource";
+
 export default {
+  mounted() {
+    this.$echo.channel("threads").listen("NewThreadCreated", thread => {
+      if (thread.data.user !== this.$auth.user.id) {
+        this.resources.unshift(thread.data);
+      }
+    });
+  },
   head: {
     title: "Home"
   },

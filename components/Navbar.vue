@@ -47,11 +47,16 @@ export default {
       this.$echo
         .private("App.Models.User." + this.$auth.user.id)
         .notification(notification => {
-          const audio = new Audio("notification.mp3");
+          const audio = new Audio("/notification.mp3");
           audio.play();
+
           this.$store.commit("notification/UNSHIFT_NOTIFICATION", notification);
         });
     }
+  },
+  beforeDestroy() {
+    if (this.$auth.loggedIn)
+      this.$echo.leave("App.Models.User." + this.$auth.user.id);
   },
   methods: {
     logout() {

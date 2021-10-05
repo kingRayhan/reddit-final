@@ -1,0 +1,4 @@
+- Append new post via socket
+- increment vote with socket
+- notification email
+- redirect to client after verification
