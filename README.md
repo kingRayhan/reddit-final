@@ -1,4 +1,4 @@
-# client
+# Reddit Client
 
 ## Build Setup
 
