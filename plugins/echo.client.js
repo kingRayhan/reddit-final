@@ -13,7 +13,7 @@ Pusher.Runtime.createXHR = () => {
 export default (_, inject) => {
   const echo = new Echo({
     broadcaster: "pusher",
-    authEndpoint: "http://localhost:8000/broadcasting/auth",
+    authEndpoint: process.env.NUXT_ENV_API + "/broadcasting/auth",
     key: process.env.NUXT_ENV_PUSHER_KEY,
     cluster: process.env.NUXT_ENV_PUSHER_CLUSTER,
     forceTLS: true
